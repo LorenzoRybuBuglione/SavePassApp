@@ -50,6 +50,14 @@ export function RegisterLoginData() {
     const dataKey = '@savepass:logins';
 
     // Save data on AsyncStorage and navigate to 'Home' screen
+    const oldData = await AsyncStorage.getItem(dataKey);
+    const currentData = oldData ? JSON.parse(oldData) : [];
+    const dataFormatted = [
+      ...currentData,
+      newLoginData
+    ];
+    await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
+    navigate('Home');
   }
 
   return (
@@ -67,7 +75,7 @@ export function RegisterLoginData() {
             name="service_name"
             error={
               // Replace here with real content
-              'Has error ? show error message'
+              errors.service_name && errors.service_name.message
             }
             control={control}
             autoCapitalize="sentences"
@@ -79,7 +87,7 @@ export function RegisterLoginData() {
             name="email"
             error={
               // Replace here with real content
-              'Has error ? show error message'
+              errors.email && errors.email.message
             }
             control={control}
             autoCorrect={false}
@@ -92,7 +100,7 @@ export function RegisterLoginData() {
             name="password"
             error={
               // Replace here with real content
-              'Has error ? show error message'
+              errors.password && errors.password.message
             }
             control={control}
             secureTextEntry
